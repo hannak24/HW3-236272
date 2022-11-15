@@ -1,16 +1,13 @@
 # hello_me
 
-A new Flutter project.
+## Answers of dry part:
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. The controller pattern is implemented using the SnappingSheetController class. It
+   allows the user to controll the position of the snapping sheet (with or without animation, and stop snapping if it happens).
+   
+2. In the SnappingSheet class there is a parameter called snappingPositions which controlls the position of the snaped sheet. 
+   Its children can be defined with custom duration and curve parameters, which create the snapping animation.
+   
+3. InkWell has a limited number of gestures to detect but it gives the user more ways to decorate the widget (for example ripple effect tap, which makes the app more      user-friendly, exists only in InkWell).
+   gestureDetector can detect more forms of user interactions with the widget (for example pinch, swipe, touch, custom gestures...), but isn't a visual widget.
+   

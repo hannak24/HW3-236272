@@ -95,8 +95,7 @@ class SettingNotifier extends ChangeNotifier {
     await syncSaved();
     status = Status.Unauthenticated;
     _auth.signOut();
-
-    setState() {};
+    saved.clear();
     notifyListeners();
   }
 

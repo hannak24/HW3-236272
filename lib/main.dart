@@ -450,10 +450,15 @@ class _RandomWordsState extends State<RandomWords> {
         duration: Duration(seconds: 2),
       ),
     );
-    auth.logout();
+    setState(() {
+      auth.logout();
+    });
     auth.cleanUrl();
-    auth.saved.clear();
+    //auth.saved.clear();
   }
+
+
+
   @override
   Widget build(BuildContext context) {
     var auth = Provider.of<SettingNotifier>(context, listen: false);
@@ -471,6 +476,7 @@ class _RandomWordsState extends State<RandomWords> {
       onPressed: () {
         _pushLogout(context);
         curEmail = "";
+        //auth.saved.clear();
       },
       tooltip: "Logout",
     );

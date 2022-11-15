@@ -161,16 +161,13 @@ class _RandomWordsState extends State<RandomWords> {
                                 isLoginDisabled = true;
                               });
                               var curEmail = emailController.text;
-                              var url2;
                               auth.signIn(
                                   emailController.text, passwordController.text,
                                   context).then((value) async {
-                                url2 = await FirebaseStorage.instance.ref().child('$curEmail/curProfileImage').getDownloadURL();
                                 if (value) {
                                   setState(() {
                                     isLoginDisabled = false;
                                     isLogedIn = true;
-                                    url = url2;
                                   });
                                   const snack = SnackBar(
                                     content: Text('Login success'),
@@ -181,6 +178,7 @@ class _RandomWordsState extends State<RandomWords> {
                                   sync();
                                   passwordController.clear();
                                   emailController.clear();
+                                  auth.getImageUrl(curEmail);
                                   Navigator.of(context).pop();
                                 } else {
                                   passwordController.clear();
@@ -289,6 +287,7 @@ class _RandomWordsState extends State<RandomWords> {
                                                           confirmPasswordController.clear();
                                                           isSignupDisabled =
                                                           false;
+                                                          isLogedIn = true;
                                                           print("I'm here 3");
                                                           Navigator.of(context).pop();
                                                           Navigator.of(context).pop();
@@ -458,6 +457,7 @@ class _RandomWordsState extends State<RandomWords> {
       ),
     );
     auth.logout();
+    auth.cleanUrl();
   }
   @override
   Widget build(BuildContext context) {
@@ -555,10 +555,10 @@ class _RandomWordsState extends State<RandomWords> {
                   grabbingHeight: 75,
                   grabbing: InkWell(
                     onTap: () async {
-                      var url2 = await ref.getDownloadURL();
+                      //var url2 = await ref.getDownloadURL();
                       setState(()  {
                           print("tapped");
-                          url = url2;
+                          //url = url2;
                           snappingSheetController.snapToPosition(
                           SnappingPosition.factor(positionFactor: 1.0),
                         );
@@ -600,7 +600,7 @@ class _RandomWordsState extends State<RandomWords> {
                                 children: [
                                   Text(curEmail!,style: _biggerFont,),
                                   SizedBox(height: 10),
-                                  Image.network(url),
+                                  Image.network(auth.imageUrl),
                                   SizedBox(height: 10),
                                   TextButton(
                                     style: ButtonStyle(
@@ -633,13 +633,9 @@ class _RandomWordsState extends State<RandomWords> {
                                                '$curEmail/curProfileImage').putData(
                                                 fileBytes);
                                             try {
-                                                var url2 = await ref.getDownloadURL();
                                                 setState (()  {
-                                                      url = url2;
-                                                      print("url: ");
-                                                      print(url);
+                                                      auth.getImageUrl(curEmail!);
                                                 });
-                                              //Navigator.of(context).pop();
                                             }catch (error){
                                               url = '';
                                             }

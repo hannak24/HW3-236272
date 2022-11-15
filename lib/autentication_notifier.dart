@@ -11,6 +11,7 @@ class SettingNotifier extends ChangeNotifier {
   var _status = Status.Unauthenticated;
   final _firestore = FirebaseFirestore.instance;
   final saved = <String>[];
+  var _imageUrl = "https://www.whysoseriousredux.com/suspects/joker.jpg";
   User? _user;
   DocumentReference? docRef;
 
@@ -61,9 +62,26 @@ class SettingNotifier extends ChangeNotifier {
 
   String get status => _status;
 
+  String get imageUrl => _imageUrl;
+
   set status(String status) {
     _status = status;
     notifyListeners();
+  }
+
+  Future<bool> getImageUrl(String curEmail) async {
+    try{
+      _imageUrl = await FirebaseStorage.instance.ref().child('$curEmail/curProfileImage').getDownloadURL();
+      notifyListeners();
+      return true;
+    }catch(error){
+      notifyListeners();
+    }
+    return false;
+  }
+
+  void cleanUrl(){
+    _imageUrl = "https://www.whysoseriousredux.com/suspects/joker.jpg";
   }
 
   User? get user => _user;
@@ -88,7 +106,7 @@ class SettingNotifier extends ChangeNotifier {
       'password': password,
       'saved': saved,
       'uid': _user?.uid,
-      'image': ""
+      'imageUrl': ""
     });
     return docRef;
   }

@@ -117,233 +117,227 @@ class _RandomWordsState extends State<RandomWords> {
                   body: Align(
                       alignment: Alignment.center,
                       child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "Welcome to Startup Names Generator, please log in!",
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          TextField(
-                            obscureText: false,
-                            controller: emailController,
-                            decoration: InputDecoration(
-                              labelText: 'Email',
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          TextField(
-                            obscureText: true,
-                            controller: passwordController,
-                            decoration: InputDecoration(
-                              labelText: 'Password',
-                            ),
-                          ),
-                          SizedBox(height: 40),
-                          TextButton(
-                            style: ButtonStyle(
-                              minimumSize: MaterialStateProperty.all(Size(380, 50)),
-                              foregroundColor: const MaterialStatePropertyAll<
-                                  Color>(Colors.white),
-                              backgroundColor: const MaterialStatePropertyAll<
-                                  Color>(Colors.deepPurple),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  side: const BorderSide(width: 3,
-                                      color: Colors.deepPurple),
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Welcome to Startup Names Generator, please log in!",
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              TextField(
+                                obscureText: false,
+                                controller: emailController,
+                                decoration: InputDecoration(
+                                  labelText: 'Email',
                                 ),
                               ),
-                            ),
-                            onPressed: isLoginDisabled ? null : () {
-                              setState(() {
-                                isLoginDisabled = true;
-                              });
-                              var curEmail = emailController.text;
-                              auth.signIn(
-                                  emailController.text, passwordController.text,
-                                  context).then((value) async {
-                                if (value) {
-                                  setState(() {
-                                    isLoginDisabled = false;
-                                    isLogedIn = true;
-                                  });
-                                  const snack = SnackBar(
-                                    content: Text('Login success'),
-                                    duration: Duration(seconds: 3),
-                                  );
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      snack);
-                                  sync();
-                                  passwordController.clear();
-                                  emailController.clear();
-                                  auth.getImageUrl(curEmail);
-                                  Navigator.of(context).pop();
-                                } else {
-                                  passwordController.clear();
-                                  var snak = const SnackBar(
-                                    content: Text(
-                                        'There was an error logging into the app'),
-                                    duration: Duration(seconds: 3),
-                                  );
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      snak);
-                                  setState(() {
-                                    isLoginDisabled = false;
-                                  });
-                                }
-                              });
-                            },
-                            child: Column(
-                              children: const <Widget>[
-                                Text("Login"),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          ElevatedButton(
-                            style: ButtonStyle(
-                              foregroundColor: const MaterialStatePropertyAll<
-                                  Color>(Colors.white),
-                              backgroundColor: const MaterialStatePropertyAll<
-                                  Color>(Colors.blue),
-                              minimumSize: MaterialStateProperty.all(Size(380, 50)),
-                              shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  side: const BorderSide(width: 3,
-                                      color: Colors.blue),
+                              SizedBox(height: 10),
+                              TextField(
+                                obscureText: true,
+                                controller: passwordController,
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
                                 ),
                               ),
-                            ),
-                            onPressed: () async {
-                              showModalBottomSheet<void>(
-                              context: context,
-                              isScrollControlled: true,
-                              builder: (BuildContext context) {
-                              return Container(
-                                height: 800 - MediaQuery.of(context).viewInsets.bottom,
-                                color: Colors.white,
-                                child:Padding(
-                                  padding: EdgeInsets.only(
-                                  bottom: MediaQuery.of(context).viewInsets.bottom),
-                                  child: Center(
-                                    child: SingleChildScrollView(
-                                      reverse: true,
-                                      child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              const Text('Please confirm your password below:'),
-                                              TextField(
-                                                obscureText: true,
-                                                controller: confirmPasswordController,
-                                                decoration: const InputDecoration(
-                                                  labelText: 'Password',
-                                                )),
-                                               SizedBox(height: 10),
-                                               ElevatedButton(
-                                                  child: const Text('Confirm'),
-                                                  onPressed: () async {
-                                                    print("confirmPasswordController.text:");
-                                                    print(confirmPasswordController.text);
-                                                    print("passwordController.text:");
-                                                    print(passwordController.text);
-                                                    if (confirmPasswordController
-                                                        .text ==
-                                                        passwordController
-                                                            .text) {
-                                                      print("I'm here");
-                                                      if (isSignupDisabled) {
-                                                        return;
-                                                      }
-                                                      setState(() {
-                                                        isSignupDisabled = true;
-                                                      });
-                                                      auth.singUp(
-                                                          emailController.text,
-                                                          passwordController
-                                                              .text,
-                                                          context).then((
-                                                          value) {
-                                                        if (value != null) {
-                                                          const snack = SnackBar(
-                                                            content: Text(
-                                                                'Signup success'),
-                                                            duration: Duration(
-                                                                seconds: 3),
-                                                          );
-                                                          ScaffoldMessenger.of(
-                                                              context)
-                                                              .showSnackBar(
-                                                              snack);
-                                                          passwordController
-                                                              .clear();
-                                                          emailController
-                                                              .clear();
-                                                          confirmPasswordController.clear();
-                                                          isSignupDisabled =
-                                                          false;
-                                                          isLogedIn = true;
-                                                          print("I'm here 3");
-                                                          Navigator.of(context).pop();
-                                                          Navigator.of(context).pop();
-                                                        } else {
-                                                          ScaffoldMessenger.of(
-                                                              context)
-                                                              .showSnackBar(
-                                                              const SnackBar(
-                                                                content: Text(
-                                                                    'There was an error signing up'),
-                                                                duration: Duration(
-                                                                    seconds: 2),
-                                                              ));
-                                                          passwordController.clear();
-                                                          confirmPasswordController.clear();
-                                                          print("I'm here");
-                                                          setState(() {
-                                                            isSignupDisabled =
-                                                            false;
-                                                          });
-                                                        }
-                                                      });
-                                                    }
-                                                    else {
-                                                      ScaffoldMessenger.of(
-                                                          context)
-                                                          .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                'Password must match!'),
-                                                            duration: Duration(
-                                                                seconds: 3),
-                                                          ));
-                                                      Navigator.pop(context);
-                                                    }
-                                                  }
-                                               ),
-                                            ],
-                                      ),
+                              SizedBox(height: 40),
+                              TextButton(
+                                style: ButtonStyle(
+                                  minimumSize: MaterialStateProperty.all(Size(380, 50)),
+                                  foregroundColor: const MaterialStatePropertyAll<
+                                      Color>(Colors.white),
+                                  backgroundColor: const MaterialStatePropertyAll<
+                                      Color>(Colors.deepPurple),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      side: const BorderSide(width: 3,
+                                          color: Colors.deepPurple),
                                     ),
                                   ),
-                                 )
-                                )
-                              );
-                            },
-                           );
-                            },
-                            child: Column(
-                              children: const <Widget>[
-                                Text("New user? Click to sign up"),
-                              ],
-                            ),
-                          ),
-                        ],
+                                ),
+                                onPressed: isLoginDisabled ? null : () {
+                                  setState(() {
+                                    isLoginDisabled = true;
+                                  });
+                                  var curEmail = emailController.text;
+                                  auth.signIn(
+                                      emailController.text, passwordController.text,
+                                      context).then((value) async {
+                                    if (value) {
+                                      setState(() {
+                                        isLoginDisabled = false;
+                                        isLogedIn = true;
+                                      });
+                                      const snack = SnackBar(
+                                        content: Text('Login success'),
+                                        duration: Duration(seconds: 3),
+                                      );
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          snack);
+                                      sync();
+                                      passwordController.clear();
+                                      emailController.clear();
+                                      auth.getImageUrl(curEmail);
+                                      Navigator.of(context).pop();
+                                    } else {
+                                      passwordController.clear();
+                                      var snak = const SnackBar(
+                                        content: Text(
+                                            'There was an error logging into the app'),
+                                        duration: Duration(seconds: 3),
+                                      );
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          snak);
+                                      setState(() {
+                                        isLoginDisabled = false;
+                                      });
+                                    }
+                                  });
+                                },
+                                child: Column(
+                                  children: const <Widget>[
+                                    Text("Login"),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  foregroundColor: const MaterialStatePropertyAll<
+                                      Color>(Colors.white),
+                                  backgroundColor: const MaterialStatePropertyAll<
+                                      Color>(Colors.blue),
+                                  minimumSize: MaterialStateProperty.all(Size(380, 50)),
+                                  shape: MaterialStateProperty.all(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      side: const BorderSide(width: 3,
+                                          color: Colors.blue),
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  showModalBottomSheet<void>(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                          height: 800 - MediaQuery.of(context).viewInsets.bottom,
+                                          color: Colors.white,
+                                          child:Padding(
+                                              padding: EdgeInsets.only(
+                                                  bottom: MediaQuery.of(context).viewInsets.bottom),
+                                              child: Center(
+                                                child: SingleChildScrollView(
+                                                  reverse: true,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(16.0),
+                                                    child: Column(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      mainAxisSize: MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        const Text('Please confirm your password below:'),
+                                                        TextField(
+                                                            obscureText: true,
+                                                            controller: confirmPasswordController,
+                                                            decoration: const InputDecoration(
+                                                              labelText: 'Password',
+                                                            )),
+                                                        SizedBox(height: 10),
+                                                        ElevatedButton(
+                                                            child: const Text('Confirm'),
+                                                            onPressed: () async {
+                                                              if (confirmPasswordController
+                                                                  .text ==
+                                                                  passwordController
+                                                                      .text) {
+                                                                if (isSignupDisabled) {
+                                                                  return;
+                                                                }
+                                                                setState(() {
+                                                                  isSignupDisabled = true;
+                                                                });
+                                                                auth.singUp(
+                                                                    emailController.text,
+                                                                    passwordController
+                                                                        .text,
+                                                                    context).then((
+                                                                    value) {
+                                                                  if (value != null) {
+                                                                    const snack = SnackBar(
+                                                                      content: Text(
+                                                                          'Signup success'),
+                                                                      duration: Duration(
+                                                                          seconds: 3),
+                                                                    );
+                                                                    ScaffoldMessenger.of(
+                                                                        context)
+                                                                        .showSnackBar(
+                                                                        snack);
+                                                                    passwordController
+                                                                        .clear();
+                                                                    emailController
+                                                                        .clear();
+                                                                    confirmPasswordController.clear();
+                                                                    setState(() {
+                                                                      isSignupDisabled = false;
+                                                                      isLogedIn = true;
+                                                                    });
+                                                                    Navigator.of(context).pop();
+                                                                    Navigator.of(context).pop();
+                                                                  } else {
+                                                                    ScaffoldMessenger.of(
+                                                                        context)
+                                                                        .showSnackBar(
+                                                                        const SnackBar(
+                                                                          content: Text(
+                                                                              'There was an error signing up'),
+                                                                          duration: Duration(
+                                                                              seconds: 2),
+                                                                        ));
+                                                                    passwordController.clear();
+                                                                    confirmPasswordController.clear();
+                                                                    setState(() {
+                                                                      isSignupDisabled =
+                                                                      false;
+                                                                    });
+                                                                  }
+                                                                });
+                                                              }
+                                                              else {
+                                                                ScaffoldMessenger.of(
+                                                                    context)
+                                                                    .showSnackBar(
+                                                                    const SnackBar(
+                                                                      content: Text(
+                                                                          'Password must match!'),
+                                                                      duration: Duration(
+                                                                          seconds: 3),
+                                                                    ));
+                                                                Navigator.pop(context);
+                                                              }
+                                                            }
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                          )
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Column(
+                                  children: const <Widget>[
+                                    Text("New user? Click to sign up"),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
                       )
-                  )
                   )
               );
             }
@@ -426,16 +420,16 @@ class _RandomWordsState extends State<RandomWords> {
           ).toList()
               : <Widget>[];
           return Scaffold(
-            resizeToAvoidBottomInset: true,
-            appBar: AppBar(
-              title: const Text('Saved Suggestions'),
-            ),
-            //body: ListView(children: divided),
-            body: Stack(
-              children: [
-                ListView(children: divided),
-              ],
-            )
+              resizeToAvoidBottomInset: true,
+              appBar: AppBar(
+                title: const Text('Saved Suggestions'),
+              ),
+              //body: ListView(children: divided),
+              body: Stack(
+                children: [
+                  ListView(children: divided),
+                ],
+              )
           );
         },
       ),
@@ -466,8 +460,6 @@ class _RandomWordsState extends State<RandomWords> {
     if(curEmail == null){
       curEmail = "";
     }
-    final ref = FirebaseStorage.instance.ref().child('$curEmail/curProfileImage');
-    String url = "https://www.whysoseriousredux.com/suspects/joker.jpg";
     var loginButton = IconButton(
       icon: const Icon(Icons.login_sharp),
       onPressed: _pushLogin,
@@ -484,194 +476,208 @@ class _RandomWordsState extends State<RandomWords> {
     //FilePickerResult? result;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: isLogedIn ? logoutButton : loginButton,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.star),
-            onPressed: _pushSaved,
-            tooltip: 'Saved Suggestions',
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(16.0),
-              itemBuilder: (context, i) {
-                if (i.isOdd) return const Divider();
-                final index = i ~/ 2;
-                if (index >= _suggestions.length) {
-                  _suggestions.addAll(generateWordPairs().take(100));
-                }
-                final alreadySaved =
-                auth.saved.contains(_suggestions[index].asPascalCase);
-                return ListTile(
-                  title: Text(
-                    _suggestions[index].asPascalCase,
-                    style: _biggerFont,
-                  ),
-                  trailing: Icon(
-                    alreadySaved ? Icons.favorite : Icons.favorite_border,
-                    color: alreadySaved ? Colors.red : null,
-                    semanticLabel: alreadySaved ? "Remove from saved" : "Save",
-                  ),
-                  onTap: () {
-                    setState(() {
-                      if (alreadySaved) {
-                        auth.saved.remove(_suggestions[index].asPascalCase);
-                      } else {
-                        auth.saved.add(_suggestions[index].asPascalCase);
-                      }
-                    });
-                  },
-                );
-              }),
-              if(isLogedIn)
-                SnappingSheet(
-                  snappingPositions: [
-                    SnappingPosition.factor(
-                      positionFactor: 0.0,
-                      snappingCurve: Curves.easeOutExpo,
-                      snappingDuration: Duration(seconds: 1),
-                      grabbingContentOffset: GrabbingContentOffset.top,
-                    ),
-                    SnappingPosition.pixels(
-                      positionPixels: snappingPosition,
-                      snappingCurve: Curves.elasticOut,
-                      snappingDuration: Duration(milliseconds: 1750),
-                    ),
-                    SnappingPosition.factor(
-                      positionFactor: 1.0,
-                      snappingCurve: Curves.bounceOut,
-                      snappingDuration: Duration(seconds: 1),
-                      grabbingContentOffset: GrabbingContentOffset.bottom,
-                    ),
-                  ],
-                  controller: snappingSheetController,
-                  lockOverflowDrag: true,
-                  grabbingHeight: 75,
-                  grabbing: InkWell(
-                    onTap: () async {
-                      //var url2 = await ref.getDownloadURL();
-                      setState(()  {
-                          print("tapped");
-                          //url = url2;
-                          snappingSheetController.snapToPosition(
-                          SnappingPosition.factor(positionFactor: 1.0),
-                        );
-                      });
-                    },
-                    child: Container(
-                              height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width,
-                              padding:EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey[100],
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                ),
-                              ),
-                              child: Row(
-                                //mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Welcome back, $curEmail"),
-                                  Icon(Icons.arrow_upward_outlined,size:15,color:Colors.black.withOpacity(0.8)),
-                                ],
-                              ),
-                            ),
-                  ),
-                  sheetBelow: SnappingSheetContent(
-                    draggable: true,
-                    child: Container(
-                      height:  580 - MediaQuery.of(context).viewInsets.bottom,
-                      color: Colors.white,
-                      child: Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: ListView(
-                                //mainAxisSize: MainAxisSize.max,
-                                //mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(curEmail!,style: _biggerFont,),
-                                  SizedBox(height: 10),
-                                  Image.network(auth.imageUrl),
-                                  SizedBox(height: 10),
-                                  TextButton(
-                                    style: ButtonStyle(
-                                      foregroundColor: const MaterialStatePropertyAll<
-                                          Color>(Colors.white),
-                                      backgroundColor: const MaterialStatePropertyAll<
-                                          Color>(Colors.lightBlue),
-                                    ),
-                                    onPressed: () async {
-                                      print('Pressed');
-                                      FilePickerResult? result = await FilePicker.platform.pickFiles(withData: true);
-                                      if (result != null) {
-                                        Uint8List? fileBytes = result.files.first.bytes;
-                                        String? fileName = result.files.first.name;
-                                        String? path = result.files.first.path;
-                                        String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-                                      // Upload file
-                                        // Create a reference to the file to delete
-                                        final storageRef = FirebaseStorage.instance.ref();
-                                        try {
-                                          if(fileBytes != null) {
-                                            try {
-                                              await FirebaseStorage.instance
-                                                  .ref()
-                                                  .child(
-                                                  '$curEmail/curProfileImage')
-                                                  .delete();
-                                            }catch(error){}
-                                            await FirebaseStorage.instance.ref(
-                                               '$curEmail/curProfileImage').putData(
-                                                fileBytes);
-                                            try {
-                                                setState (()  {
-                                                      auth.getImageUrl(curEmail!);
-                                                });
-                                            }catch (error){
-                                              url = '';
-                                            }
-                                          }
-                                          else {
-                                            print("file is empty");
-                                          }
-                                         }catch(error){
-                                           print(error.toString());
-                                           print("error");
-                                         }
-                                         result = null;
-                                       }
-                                      else{
-                                        SnackBar(
-                                          content: Text('No image selected'),
-                                          duration: Duration(seconds: 2),
-                                        );
-                                      }
-                                      //Navigator.of(context).pop();
-                                    },
-                                    child: Text(
-                                      "Change Avatar", style: _biggerFont,),
-                                  ),
-                                ]
-                            ),
-                          )
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: isLogedIn ? logoutButton : loginButton,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.star),
+              onPressed: _pushSaved,
+              tooltip: 'Saved Suggestions',
+            ),
+          ],
+        ),
+        body: Stack(
+            children: [
+              ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.all(16.0),
+                  itemBuilder: (context, i) {
+                    if (i.isOdd) return const Divider();
+                    final index = i ~/ 2;
+                    if (index >= _suggestions.length) {
+                      _suggestions.addAll(generateWordPairs().take(100));
+                    }
+                    final alreadySaved =
+                    auth.saved.contains(_suggestions[index].asPascalCase);
+                    return ListTile(
+                      title: Text(
+                        _suggestions[index].asPascalCase,
+                        style: _biggerFont,
                       ),
-                    ),
-                  ),
-                ),
-          ]
-      )
+                      trailing: Icon(
+                        alreadySaved ? Icons.favorite : Icons.favorite_border,
+                        color: alreadySaved ? Colors.red : null,
+                        semanticLabel: alreadySaved ? "Remove from saved" : "Save",
+                      ),
+                      onTap: () {
+                        setState(() {
+                          if (alreadySaved) {
+                            auth.saved.remove(_suggestions[index].asPascalCase);
+                          } else {
+                            auth.saved.add(_suggestions[index].asPascalCase);
+                          }
+                        });
+                      },
+                    );
+                  }),
+              if(isLogedIn)
+                mainSnappingSheet(),
+            ]
+        )
     );
   }
 }
+
+class mainSnappingSheet extends StatefulWidget {
+  const mainSnappingSheet({Key? key}) : super(key: key);
+
+  @override
+  State<mainSnappingSheet> createState() => _mainSnappingSheetState();
+}
+
+class _mainSnappingSheetState extends State<mainSnappingSheet> {
+  @override
+  Widget build(BuildContext context) {
+    var auth = Provider.of<SettingNotifier>(context, listen: false);
+    var curEmail = auth.user?.email;
+    if(curEmail == null){
+      curEmail = "";
+    }
+    const _biggerFont = TextStyle(fontSize: 18);
+    return SnappingSheet(
+            snappingPositions: [
+              SnappingPosition.factor(
+                positionFactor: 0.0,
+                snappingCurve: Curves.easeOutExpo,
+                snappingDuration: Duration(seconds: 1),
+                grabbingContentOffset: GrabbingContentOffset.top,
+              ),
+              SnappingPosition.pixels(
+                positionPixels: snappingPosition,
+                snappingCurve: Curves.elasticOut,
+                snappingDuration: Duration(milliseconds: 1750),
+              ),
+              SnappingPosition.factor(
+                positionFactor: 1.0,
+                snappingCurve: Curves.bounceOut,
+                snappingDuration: Duration(seconds: 1),
+                grabbingContentOffset: GrabbingContentOffset.bottom,
+              ),
+            ],
+            controller: snappingSheetController,
+            lockOverflowDrag: true,
+            grabbingHeight: 75,
+            grabbing: InkWell(
+              onTap: () async {
+                setState(()  {
+                  snappingSheetController.snapToPosition(
+                    SnappingPosition.factor(positionFactor: 1.0),
+                  );
+                });
+              },
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                padding:EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.blueGrey[100],
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    bottomLeft: Radius.circular(10),
+                  ),
+                ),
+                child: Row(
+                  //mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Welcome back, $curEmail"),
+                    Icon(Icons.arrow_upward_outlined,size:15,color:Colors.black.withOpacity(0.8)),
+                  ],
+                ),
+              ),
+            ),
+            sheetBelow: SnappingSheetContent(
+              draggable: true,
+              child: Container(
+                height:  580 - MediaQuery.of(context).viewInsets.bottom,
+                color: Colors.white,
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: ListView(
+                          children: [
+                            Text(curEmail!,style: _biggerFont,),
+                            SizedBox(height: 10),
+                            Image.network(Provider.of<SettingNotifier>(context, listen: true).imageUrl),
+                            SizedBox(height: 10),
+                            TextButton(
+                              style: ButtonStyle(
+                                foregroundColor: const MaterialStatePropertyAll<
+                                    Color>(Colors.white),
+                                backgroundColor: const MaterialStatePropertyAll<
+                                    Color>(Colors.lightBlue),
+                              ),
+                              onPressed: () async {
+                                FilePickerResult? result = await FilePicker.platform.pickFiles(withData: true);
+                                if (result != null) {
+                                  Uint8List? fileBytes = result.files.first.bytes;
+                                  try {
+                                    if(fileBytes != null) {
+                                      try {
+                                        await FirebaseStorage.instance
+                                            .ref()
+                                            .child(
+                                            '$curEmail/curProfileImage')
+                                            .delete();
+                                      }catch(error){
+                                        print("error deleting previous image");
+                                        print(error.toString());
+                                      }
+                                      await FirebaseStorage.instance.ref(
+                                          '$curEmail/curProfileImage').putData(
+                                          fileBytes);
+                                      try {
+                                        setState (()  {
+                                          auth.getImageUrl(curEmail!);
+                                        });
+                                      }catch (error){
+                                        url = '';
+                                        print("error getting image's url");
+                                        print(error.toString());
+                                      }
+                                    }
+                                    else {
+                                      print("file is empty");
+                                    }
+                                  }catch(error){
+                                    print(error.toString());
+                                    print("error");
+                                  }
+                                  result = null;
+                                }
+                                else{
+                                  print("no image");
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text('No image selected'),
+                                    duration: Duration(seconds: 2),
+                                  ));
+                                  return;
+                                }
+                              },
+                              child: Text(
+                                "Change Avatar", style: _biggerFont,),
+                            ),
+                          ]
+                      ),
+                    )
+                ),
+              ),
+            ),
+          );
+        }
+      }
 
 
 

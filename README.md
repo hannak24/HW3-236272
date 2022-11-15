@@ -11,3 +11,10 @@
 3. InkWell has a limited number of gestures to detect but it gives the user more ways to decorate the widget (for example ripple effect tap, which makes the app more      user-friendly, exists only in InkWell).
    gestureDetector can detect more forms of user interactions with the widget (for example pinch, swipe, touch, custom gestures...), but isn't a visual widget.
    
+
+Comments for the HW:
+
+1. After the remark of Ofek that user's suggestions should be saved when he signs out, I implemented it in HW3.
+
+2. The joker picture is the default picture of users that have no profile picture. I found its sudden pop up when the snapping
+   sheet is tapped amusing :) .

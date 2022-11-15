@@ -440,7 +440,7 @@ class _RandomWordsState extends State<RandomWords> {
     var auth = Provider.of<SettingNotifier>(context, listen: false);
     setState(() {
       isLogedIn = false;
-      auth.saved.clear();
+      //auth.saved.clear();
     });
 
     unSync();
@@ -452,6 +452,7 @@ class _RandomWordsState extends State<RandomWords> {
     );
     auth.logout();
     auth.cleanUrl();
+    auth.saved.clear();
   }
   @override
   Widget build(BuildContext context) {
